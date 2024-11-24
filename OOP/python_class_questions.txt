@@ -1,0 +1,213 @@
+- i understand why getters and setters, but why use the @property to just return an instance attribute? you can just use regular dot notation, right? seems like extra steps for no reason, unless something like encapsulation is at play  that i don't see outright...
+
+
+
+        more on this later...
+
+
+
+
+
+
+-  it looks like if i have a class with a bunch of attributes and i need to limit it then __slots__ is the way to go? can the list of allowed attributes contain both class and/or instance attributes? also, whats the point of having attributes if none of them are allowed to be used?
+
+        only applies to instance attributes not class attributes. limiting with __slots__ is memory efficient (but only use when critical), but also prevents accidental attribute creation (as you explicitly list what can be accessed) 
+
+        don't use __slots__ if you are using dynamic attributes
+
+
+
+
+
+
+
+- can a subclass alter any attribute on the super level? if yes, what are common ways to prevent this from happening, as it feels like this is something you would want to prevent a lot of the time
+
+
+        inheritance allows subclasses to change methods or attributes of the super() and there are ways to prevent or limit changes unless its really necessary:
+
+        - naming conventions for private or protected attributes
+        - "Final" variables
+        - raising Setter Exceptions
+        - Using composition over inheritance
+        - leveragin __slots__
+
+
+
+
+
+
+
+- so simply adding in the statement "@dataclass" above a class declaration automatically gives the class special methods already functional? usually i would want to edit the __repr__ for example, but your telling me @dataclass is sophisticated enough to already prepare something ready for use? how can it know what to expect for something like __eq__ as that can vary depending on what the class requirements are...
+
+
+    @dataclass reduces boilerplate code and has __init__, __repr__ and __eq__ generated automatically. 
+
+    in particular, __eq__ compares all the values of all instance attributes between two different instances.
+
+    you are also welcome to override any of them if desired
+
+    unless your class has unique requirements, you can leave the parameters of @dataclass alone. but, you are able to choose using this for example:
+
+
+        @dataclass(eq=False, repr=True, order=True)
+        class Item:
+            name: str
+            price: float
+
+
+
+
+
+- so __enter__ and __exit__ are methods that just help facilitate the functionality of an instance? or is it common to actually call something like print(file.__enter__)
+
+
+    they describe how an instance works with the "with" keyword, which is part of the context management protocol in python. neither is explicitly called typically...
+
+    __enter__: Called when execution enters the with block. It often returns the resource (e.g., a file handle or a database connection) that the block will work with.
+    
+    __exit__: Called when execution exits the with block. This method usually handles cleanup operations, such as closing a file or releasing a network connection.
+
+
+
+
+
+
+- explain __call__ to me in another way please
+
+
+
+        allows an instance of a class to be used as if it were a function, turning it into a callable object but still carry data and methods associated with the instance.
+
+
+
+
+
+
+
+
+
+
+
+- why do you not need to call super() for a mixin method to apply to the Worker class in 15?
+
+
+
+
+    more on this later...
+
+
+
+
+
+
+
+
+
+
+- so in python you can create customer decorators with "@" symbol?
+
+
+
+    more on this later...
+
+
+
+
+
+
+
+
+
+
+
+
+
+- instead of having a class attribute thats a list that keeps track of each new object created (say its part of the __init__ to add the new instance to this list), its better to either use a separate manager or registry (im assuming both are like imported modules)? what are examples of each? why are these used instead? is it because if an object instance changes it would be more complex to update it in the class attribute, or is it more a separation of concerns issue? additionally, a factory pattern to manage instances is recommended as well. what would be an example of that and why would that be used over a separate manager and/or registry?
+
+
+    if instances change or there are many classes to manage, it can be complicated to solely rely on a class attribute to track class instances. 
+
+    a registry can be done like this:
+
+                    class UserRegistry:
+                    _users = []
+
+                    @classmethod
+                    def add_user(cls, user):
+                        cls._users.append(user)
+
+                    @classmethod
+                    def get_users(cls):
+                        return cls._users
+
+                    class User:
+                        def __init__(self, name):
+                            self.name = name
+                            UserRegistry.add_user(self)  # Register the user upon creation
+
+                    # Usage
+                    user1 = User("Alice")
+                    user2 = User("Bob")
+                    print(UserRegistry.get_users())  # Outputs: [<__main__.User object at ...>, <__main__.User object at ...>]
+
+
+                Reasons for Using a Manager/Registry
+            Flexibility: If you decide to change how users are managed (e.g., adding a database layer), you can do so in the manager without altering the User class.
+            Ease of Maintenance: Updates or deletions of instances can be managed in one place, avoiding the need to update multiple class attributes.
+            Separation of Concerns: It keeps the instance management logic distinct from the business logic, leading to cleaner and more maintainable code
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- is it common that instead of calling a constructor to make a new instance, you have an @classmethod that creates instantiations for you instead? like, a specific function that will do all the creation for you instead that belongs to the class? why or why not? also, if the answer is yes, then is it common to have multiple classmethods for instantiations depending on source (ex. a method that can manipulate data from a csv file, one that can do it from json file, etc)? 
+
+        yes, this is a factory method. whether it should be a staticmethod or classmethod:
+
+        In your create_candybar_instances method, if you anticipate that the method might need to create instances of subclasses of Candybar or if you want to maintain a reference to the class’s state (like keeping track of all created candy bars), then using a class method is preferable.
+
+        If the method is purely focused on reading data from a CSV and creating instances without needing to access any class or instance state, a static method could be a cleaner approach. However, since you are adding instances to the class attribute (or potentially would like to), the class method makes more sense in this context.
+
+
+        finally, it is certainly common to have different factory methods to create instances from different sources
+
+
+
+
+
+
+
+- would there ever be a good reason to call a static method or a class method from an instance of the class?
+
+
+    sometimes.
+
+    class methods:
+
+    Convenience: It can be convenient to call a class method from an instance, especially if the class method performs operations relevant to the instance. This can improve code readability and make it easier for users of the class.
+
+    Contextual Relevance: In some cases, you might want to call a class method that does something related to the instance but doesn’t depend on the instance's state. This can provide context to the method call.
+
+    Factory Methods: If a class method is a factory method, you might want to create an instance of the class based on the state or data of another instance.
+
+
+    static methods:
+
+    Utility Functions: Static methods are often utility functions that perform a task related to the class but don’t need access to instance or class attributes. Calling them from an instance can be useful for clarity, especially if the method logically belongs to the class context.
+
+    Organizational Clarity: Calling static methods from instances can also signal that the method is related to the class's functionality, even if it doesn't interact with instance or class attributes. This can improve the organization and clarity of your code.

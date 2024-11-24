@@ -1,0 +1,16 @@
+{
+     "name": "John Doe",
+     "age": 30,
+     "is_active": true,
+     "email": "johndoe@example.com",
+     "hobbies": [
+          "reading",
+          "cycling",
+          "coding"
+     ],
+     "address": {
+          "street": "123 Elm St",
+          "city": "Springfield",
+          "zip": "12345"
+     }
+}

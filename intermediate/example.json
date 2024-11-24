@@ -1,0 +1,48 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"name": "Alice Johnson",
+			"email": "alice@example.com",
+			"isActive": true,
+			"roles": ["admin", "editor"]
+		},
+		{
+			"id": 2,
+			"name": "Bob Smith",
+			"email": "bob@example.com",
+			"isActive": false,
+			"roles": ["viewer"]
+		}
+	],
+	"products": [
+		{
+			"productId": "A123",
+			"name": "Wireless Mouse",
+			"price": 29.99,
+			"tags": ["electronics", "computer"],
+			"stock": {
+				"warehouse": 120,
+				"store": 30
+			}
+		},
+		{
+			"productId": "B456",
+			"name": "Mechanical Keyboard",
+			"price": 89.99,
+			"tags": ["electronics", "keyboard"],
+			"stock": {
+				"warehouse": 80,
+				"store": 20
+			}
+		}
+	],
+	"settings": {
+		"theme": "dark",
+		"notifications": {
+			"email": true,
+			"sms": false
+		},
+		"language": "en-US"
+	}
+}
