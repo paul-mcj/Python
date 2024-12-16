@@ -1,0 +1,19 @@
+Process:
+- 
+
+
+
+
+
+Threads:
+- 
+
+
+** A good analogy is: processes are like web browsers, and threads are like tabs running in web browsers. Modern web browsers can make use of multi-threading and multi-processing so the analogy isn't 100% real-life accurate, but the analogy of how they work together conceptually is correct.
+
+GIL:
+- 
+
+
+
+
