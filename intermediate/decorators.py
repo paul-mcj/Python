@@ -59,11 +59,6 @@ print(say("hello"))
 
 print()
 
-# ||| there are a number of built-in decorators, too:
-# @staticmethod: defines a method that doesn't depend on the instance or class
-# @classmethod: defines a method that works with the class instead of an instance
-# @property: turns a method into an attribute-style access
-
 # ||| Parameterized decorators can take in their own arguments as well
 def repeat(n):
     def decorator(func):
@@ -123,4 +118,9 @@ print(loop_to_billion())
 #     Overuse: Excessive stacking of decorators can make debugging harder.
 #     Performance Overhead: Each decorator adds some overhead, so they should be used judiciously in performance-critical code.
 #     Complexity: A poorly written decorator can make behavior unpredictable.
+
+# ||| there are a number of built-in class decorators, too:
+# @staticmethod: defines a method that doesn't depend on the instance or class
+# @classmethod: defines a method that works with the class instead of an instance
+# @property: turns a method into an attribute-style access
 
