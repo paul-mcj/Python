@@ -1,19 +1,38 @@
-Process:
-- 
+Process: an instance of a program (ex. Python interpreter) 
+
++ take advantage of multiple CPUs and cores
++ separate memory space (memory is not shared between processes)
++ Processes are started independently from one another
++ Processes are killable
+
+- heavyweight (ie. starting a process is slower than starting a thread)
+- takes up more memory
+- inter-process communication is complicated due to separate memory spaces
 
 
 
 
+Thread: An entity within a process that can be scheduled (a process essentially can contain multiple threads).
++ All threads in one process share the same memory
++ lightweight (ie. starting a thread is faster than starting a process)
++ great for I/O tasks
 
-Threads:
-- 
+- limited by global interpreter lock (only one thread at a time; no parallel computation available)
+- no effect for CPU-bound tasks
+- Not killable, so memory leaks need to be considered
+- Race conditions (where shared data is updated/read simultaneously) also need to be considered, otherwise bugs/crashes occur
+
+
+
+
+GIL: global interpreter lock
+- in Python, this locks threads so that only one can execute code at any given time (which prevents race conditions) 
+- Needed because memory-management from installed Python interpreters is not thread-safe
+- If not used, then need to either:
+    - use multi threading
+    - use a version of Python that is free-threaded (ex. Jython)
+    - use Python as a wrapper for 3rd party libraries
+
 
 
 ** A good analogy is: processes are like web browsers, and threads are like tabs running in web browsers. Modern web browsers can make use of multi-threading and multi-processing so the analogy isn't 100% real-life accurate, but the analogy of how they work together conceptually is correct.
-
-GIL:
-- 
-
-
-
-
