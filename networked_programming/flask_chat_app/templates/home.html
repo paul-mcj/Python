@@ -1,0 +1,41 @@
+<!-- Extend base template -->
+{% extends 'base.html' %} {% block content %}
+<form
+	method="post"
+	class="buttons">
+	<h3>Enter the Chat Room</h3>
+	<div>
+		<label>Name:</label>
+		<input
+			type="text"
+			placeholder="Name"
+			name="name"
+			value="{{name}}" />
+		<!-- NOTE: the name attribute is essential for any button or input element as its how we identify the element from Python -->
+	</div>
+	<div class="join">
+		<input
+			type="text"
+			placeholder="Room Code"
+			name="code"
+			value="{{code}}" />
+		<button
+			type="submit"
+			name="join">
+			Join a Room
+		</button>
+	</div>
+	<button
+		class="create-button"
+		type="submit"
+		name="create">
+		Create a Room
+	</button>
+	<!-- NOTE: this is how Jenja template can check for conditionals -->
+	{% if error %}
+	<ul>
+		<li>{{error}}</li>
+	</ul>
+	{% endif %}
+</form>
+{% endblock %}
